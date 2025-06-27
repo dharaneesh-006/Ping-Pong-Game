@@ -67,7 +67,6 @@ function startGame() {
   score = 0;
   scoreText.textContent = `Score: ${score}`;
 
-  // 🟨 FIXED: Center the ball on any screen size
   const game = document.getElementById("game");
   const gameWidth = game.offsetWidth;
   ballX = (gameWidth - 32) / 2;
@@ -113,6 +112,10 @@ function gameLoop() {
     ballVY *= -1;
     score++;
     scoreText.textContent = `Score: ${score}`;
+
+    // ✅ Gradually increase speed after each hit
+    ballVX *= 1.03;
+    ballVY *= 1.03;
   }
 
   // Missed paddle
