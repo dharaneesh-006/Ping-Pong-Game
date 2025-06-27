@@ -39,13 +39,12 @@ h1 {
 #player-tracker {
   position: absolute;
   bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
   width: 80px;
   height: 10px;
   background: #00ff90;
   border-radius: 4px;
 }
+
 
 #ball {
   position: absolute;
@@ -121,7 +120,7 @@ button:hover {
 @media (max-width: 600px) {
   #player-tracker {
     width: 100px;
-    height: 14px;
+    height: 20px;
   }
 
   #ball {
