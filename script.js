@@ -18,13 +18,12 @@ const ball = document.getElementById("ball");
 const scoreText = document.getElementById("score");
 const leaderboard = document.getElementById("leaderboard");
 
-let ballX = 300, ballY = 100;
-let ballVX = 3, ballVY = 3;
+let ballX, ballY, ballVX = 3, ballVY = 3;
 let score = 0;
 let interval;
 let playerName = "";
 
-// ✅ Load player name from localStorage
+// Load player name from cache on load
 window.addEventListener("DOMContentLoaded", () => {
   const cachedName = localStorage.getItem("playerName");
   if (cachedName) {
@@ -33,43 +32,45 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ✅ Paddle movement logic (mouse + touch accurate)
-function movePaddleByX(xPosition) {
+// Move paddle logic (shared for mouse and touch)
+function movePaddle(xPosition) {
   const game = document.getElementById("game");
   const gameRect = game.getBoundingClientRect();
   const paddleWidth = paddle.offsetWidth;
   let x = xPosition - gameRect.left - paddleWidth / 2;
-  x = Math.max(0, Math.min(x, game.clientWidth - paddleWidth));
+  x = Math.max(0, Math.min(x, game.offsetWidth - paddleWidth));
   paddle.style.left = `${x}px`;
 }
 
-document.addEventListener("mousemove", (e) => movePaddleByX(e.clientX));
+// Mouse move
+document.addEventListener("mousemove", (e) => movePaddle(e.clientX));
 
+// Touch move
 document.addEventListener("touchmove", (e) => {
-  if (e.touches.length > 0) {
-    const touch = e.touches[0];
-    movePaddleByX(touch.clientX);
-  }
-}, { passive: false });
+  const touch = e.touches[0];
+  movePaddle(touch.clientX);
+});
 
-document.getElementById("game").addEventListener("touchmove", (e) => {
-  e.preventDefault();
-}, { passive: false });
-
-// ✅ Start Game
+// Start the game
 function startGame() {
   playerName = document.getElementById("player-name").value.trim();
+
   if (!playerName) {
     alert("Please enter your name!");
     return;
   }
 
+  // Cache the name
   localStorage.setItem("playerName", playerName);
   document.getElementById("plyr-name").textContent = `Player: ${playerName}`;
 
   score = 0;
   scoreText.textContent = `Score: ${score}`;
-  ballX = 300;
+
+  // 🟨 FIXED: Center the ball on any screen size
+  const game = document.getElementById("game");
+  const gameWidth = game.offsetWidth;
+  ballX = (gameWidth - 32) / 2;
   ballY = 100;
   ballVX = 3 + Math.random() * 2;
   ballVY = 3 + Math.random() * 2;
@@ -78,7 +79,7 @@ function startGame() {
   interval = setInterval(gameLoop, 16);
 }
 
-// ✅ Main game loop
+// Main game loop
 function gameLoop() {
   ballX += ballVX;
   ballY += ballVY;
@@ -91,11 +92,14 @@ function gameLoop() {
   const paddleY = paddleRect.top - gameRect.top;
   const paddleWidth = paddle.offsetWidth;
   const paddleHeight = paddle.offsetHeight;
+
   const ballSize = 32;
 
+  // Wall collision
   if (ballX <= 0 || ballX >= game.offsetWidth - ballSize) ballVX *= -1;
   if (ballY <= 0) ballVY *= -1;
 
+  // Paddle collision
   const ballBottom = ballY + ballSize;
   const paddleTop = game.offsetHeight - paddleHeight - 10;
 
@@ -111,17 +115,19 @@ function gameLoop() {
     scoreText.textContent = `Score: ${score}`;
   }
 
+  // Missed paddle
   if (ballY > game.offsetHeight) {
     clearInterval(interval);
     updateLeaderboard(playerName, score);
     alert("Game Over! Your Score: " + score);
   }
 
+  // Render ball
   ball.style.left = `${ballX}px`;
   ball.style.top = `${ballY}px`;
 }
 
-// ✅ Firebase leaderboard
+// Firebase leaderboard
 function updateLeaderboard(name, newScore) {
   const ref = db.ref('leaderboard/' + name);
   ref.once('value').then(snapshot => {
@@ -132,7 +138,7 @@ function updateLeaderboard(name, newScore) {
   });
 }
 
-// ✅ Fetch leaderboard
+// Leaderboard fetch
 function fetchLeaderboard() {
   db.ref('leaderboard').orderByValue().limitToLast(10).on('value', snapshot => {
     const scores = [];
