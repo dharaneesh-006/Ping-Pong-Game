@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#container {
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #00d1ff;
+  text-shadow: 1px 1px #000;
+}
+
+#game {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  background: #000;
+  border: 4px solid #00d1ff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+  touch-action: none; /* ✅ Prevent scroll during touch */
+}
+
+#player-tracker {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 10px;
+  background: #00ff90;
+  border-radius: 4px;
+}
+
+#ball {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+}
+
+#score {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #0f0;
+  text-shadow: 1px 1px #000;
+}
+
+#controls input,
+#controls button {
+  font-size: 1rem;
+  padding: 10px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 8px;
+}
+
+input#player-name {
+  width: 60%;
+  max-width: 250px;
+}
+
+button {
+  background: #00d1ff;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #00aacc;
+}
+
+#leaderboard-container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#leaderboard-container h2 {
+  margin-bottom: 10px;
+  color: #ffeb3b;
+}
+
+#leaderboard {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#leaderboard li {
+  background: #333;
+  margin: 4px auto;
+  padding: 8px;
+  width: 90%;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ✅ Mobile Enhancements */
+@media (max-width: 600px) {
+  #player-tracker {
+    width: 100px;
+    height: 14px;
+  }
+
+  #ball {
+    font-size: 36px;
+  }
+}
