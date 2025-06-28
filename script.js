@@ -61,7 +61,7 @@ function startGame() {
   }
 
   // Forbidden names check (case-insensitive)
-  const forbiddenNames = ["dharaneesh", "deepak"];
+  const forbiddenNames = ["dharaneesh", "deepak","punda","sunni","pak","deep"];
   const lowerName = playerName.toLowerCase();
 
   if (forbiddenNames.some(name => lowerName.includes(name))) {
