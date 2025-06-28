@@ -60,8 +60,11 @@ function startGame() {
     return;
   }
 
-  // Check for forbidden name (case insensitive)
-  if (playerName.toLowerCase().includes("dharaneesh")) {
+  // Forbidden names check (case-insensitive)
+  const forbiddenNames = ["dharaneesh", "deepak"];
+  const lowerName = playerName.toLowerCase();
+
+  if (forbiddenNames.some(name => lowerName.includes(name))) {
     alert("Invalid name. Please enter a different name.");
     return;
   }
@@ -83,6 +86,7 @@ function startGame() {
   if (interval) clearInterval(interval);
   interval = setInterval(gameLoop, 16);
 }
+
 
 
 // Main game loop
