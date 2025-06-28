@@ -60,6 +60,12 @@ function startGame() {
     return;
   }
 
+  // Check for forbidden name (case insensitive)
+  if (playerName.toLowerCase().includes("dharaneesh")) {
+    alert("Invalid name. Please enter a different name.");
+    return;
+  }
+
   // Cache the name
   localStorage.setItem("playerName", playerName);
   document.getElementById("plyr-name").textContent = `Player: ${playerName}`;
@@ -77,6 +83,7 @@ function startGame() {
   if (interval) clearInterval(interval);
   interval = setInterval(gameLoop, 16);
 }
+
 
 // Main game loop
 function gameLoop() {
